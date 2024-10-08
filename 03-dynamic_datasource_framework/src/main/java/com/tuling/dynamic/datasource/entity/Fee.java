@@ -8,9 +8,11 @@ import lombok.Data;
  * @Description:
  */
 @Data
-public class Frend  {
+public class Fee  {
     private Long id;
 
     private String name;
+
+    private Integer fee;
 
 }
