@@ -2,14 +2,12 @@ package com.tuling.dynamic.datasource.service.impl;
 
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.dynamic.datasource.annotation.DSTransactional;
+import com.tuling.dynamic.datasource.entity.Ds;
 import com.tuling.dynamic.datasource.mapper.FeeMapper;
 import com.tuling.dynamic.datasource.entity.Fee;
 import com.tuling.dynamic.datasource.service.FeeService;
-import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 

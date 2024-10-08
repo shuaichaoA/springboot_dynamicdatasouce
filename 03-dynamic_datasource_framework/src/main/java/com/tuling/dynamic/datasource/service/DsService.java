@@ -1,5 +1,6 @@
 package com.tuling.dynamic.datasource.service;
 
+import com.tuling.dynamic.datasource.dto.DataSourceDTO;
 import com.tuling.dynamic.datasource.entity.Ds;
 import com.tuling.dynamic.datasource.entity.Fee;
 
@@ -9,13 +10,12 @@ import java.util.List;
  *
  * @Slogan 致敬大师，致敬未来的你
  */
-public interface FeeService {
-    List<Fee> listAll();
+public interface DsService {
+    List<Ds> list();
 
-    List<Fee> list();
+    void save(Ds ds);
 
-    void save(Fee Fee);
-
-    void delete(int id);
+    void delete(String name);
+    void update(DataSourceDTO dto);
 
 }

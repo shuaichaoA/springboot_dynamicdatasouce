@@ -44,4 +44,9 @@ public class DataSourceDTO {
      * JDBC 密码
      */
     private String password;
+
+    /**
+     * JDBC 密码
+     */
+    private String type;
 }

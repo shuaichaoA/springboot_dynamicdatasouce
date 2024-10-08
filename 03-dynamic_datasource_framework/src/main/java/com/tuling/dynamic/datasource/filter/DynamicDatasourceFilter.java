@@ -1,5 +1,6 @@
 package com.tuling.dynamic.datasource.filter;
 
+import com.baomidou.dynamic.datasource.DynamicRoutingDataSource;
 import com.baomidou.dynamic.datasource.toolkit.DynamicDataSourceContextHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
@@ -7,11 +8,19 @@ import org.springframework.util.StringUtils;
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
+import javax.sql.DataSource;
 import java.io.IOException;
+import java.util.Map;
 
 @Slf4j
 @WebFilter(filterName = "dsFilter", urlPatterns = {"/fee/*"})
 public class DynamicDatasourceFilter implements Filter {
+
+    private final DataSource dataSource;
+
+    public DynamicDatasourceFilter(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -31,7 +40,8 @@ public class DynamicDatasourceFilter implements Filter {
             dsKey = "slave";
         }
         log.info("操作类型{} 当前路径是{} 省分标识{} 数据库key[{}] ", request.getMethod(), requestURI, headerProvince, dsKey);
-
+        DynamicRoutingDataSource ds = (DynamicRoutingDataSource) dataSource;
+        Map<String, DataSource> dataSources = ds.getDataSources();
         // 执行
         try {
             DynamicDataSourceContextHolder.push(dsKey);

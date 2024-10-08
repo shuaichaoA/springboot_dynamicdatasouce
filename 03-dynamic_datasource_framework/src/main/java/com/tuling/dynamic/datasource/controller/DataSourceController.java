@@ -19,11 +19,15 @@ import com.baomidou.dynamic.datasource.DynamicRoutingDataSource;
 import com.baomidou.dynamic.datasource.creator.DefaultDataSourceCreator;
 import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DataSourceProperty;
 import com.tuling.dynamic.datasource.dto.DataSourceDTO;
+import com.tuling.dynamic.datasource.entity.Ds;
+import com.tuling.dynamic.datasource.service.DsService;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.sql.DataSource;
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -32,6 +36,8 @@ public class DataSourceController {
 
     private final DataSource dataSource;
     private final DefaultDataSourceCreator dataSourceCreator;
+    @Autowired
+    private DsService dsService;
 
     public DataSourceController(DataSource dataSource, DefaultDataSourceCreator dataSourceCreator) {
         this.dataSource = dataSource;
@@ -42,9 +48,11 @@ public class DataSourceController {
      * 获取当前所有数据源
      */
     @GetMapping
-    public Set<String> now() {
-        DynamicRoutingDataSource ds = (DynamicRoutingDataSource) dataSource;
-        return ds.getDataSources().keySet();
+    public List<Ds> now() {
+//        DynamicRoutingDataSource ds = (DynamicRoutingDataSource) dataSource;
+//        Map<String, DataSource> dataSources = ds.getDataSources();
+//        return dataSources.keySet();
+        return dsService.list();
     }
 
     /**
@@ -57,6 +65,11 @@ public class DataSourceController {
         DynamicRoutingDataSource ds = (DynamicRoutingDataSource) dataSource;
         DataSource dataSource = dataSourceCreator.createDataSource(dataSourceProperty);
         ds.addDataSource(dto.getPoolName(), dataSource);
+        Ds dsEntity = new Ds();
+        BeanUtils.copyProperties(dto, dsEntity);
+        dsEntity.setPool_name(dto.getPoolName());
+        dsEntity.setDriver_class_name(dto.getDriverClassName());
+        dsService.save(dsEntity);
         return ds.getDataSources().keySet();
     }
 
@@ -65,8 +78,21 @@ public class DataSourceController {
      */
     @DeleteMapping
     public String remove(@RequestParam String name) {
+        dsService.delete(name);
         DynamicRoutingDataSource ds = (DynamicRoutingDataSource) dataSource;
         ds.removeDataSource(name);
         return "删除成功";
+    }
+
+    @PutMapping
+    public Set<String> update(@RequestBody DataSourceDTO dto) {
+        dsService.update(dto);
+        DynamicRoutingDataSource ds = (DynamicRoutingDataSource) dataSource;
+        ds.removeDataSource(dto.getPoolName());
+        DataSourceProperty dataSourceProperty = new DataSourceProperty();
+        BeanUtils.copyProperties(dto, dataSourceProperty);
+        DataSource dataSource = dataSourceCreator.createDataSource(dataSourceProperty);
+        ds.addDataSource(dto.getPoolName(), dataSource);
+        return ds.getDataSources().keySet();
     }
 }
