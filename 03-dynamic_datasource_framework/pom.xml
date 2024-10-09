@@ -12,14 +12,22 @@
     <artifactId>dynamic_datasource_framework</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>03-dynamic_datasource_framework</name>
+    <packaging>jar</packaging>
     <description>dynamic_datasource_framework</description>
     <properties>
         <java.version>1.8</java.version>
+        <start-class>com.tuling.dynamic.datasource.DynamicDatasourceApplication</start-class>
     </properties>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-tomcat</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
@@ -60,7 +68,12 @@
             <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
             <version>3.5.0</version>
         </dependency>
-
+        <!-- 这里指定打war包的时不再需要tomcat相关的包，但是本地运行时必须注释掉，否则会报错 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <build>

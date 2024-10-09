@@ -40,8 +40,6 @@ public class DynamicDatasourceFilter implements Filter {
             dsKey = "slave";
         }
         log.info("操作类型{} 当前路径是{} 省分标识{} 数据库key[{}] ", request.getMethod(), requestURI, headerProvince, dsKey);
-        DynamicRoutingDataSource ds = (DynamicRoutingDataSource) dataSource;
-        Map<String, DataSource> dataSources = ds.getDataSources();
         // 执行
         try {
             DynamicDataSourceContextHolder.push(dsKey);

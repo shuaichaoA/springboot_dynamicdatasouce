@@ -4,35 +4,32 @@ package com.tuling.dynamic.datasource;
 import com.baomidou.dynamic.datasource.provider.AbstractJdbcDataSourceProvider;
 import com.baomidou.dynamic.datasource.provider.DynamicDataSourceProvider;
 import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DataSourceProperty;
-import com.tuling.dynamic.datasource.entity.Ds;
-import com.tuling.dynamic.datasource.service.DsService;
 import org.mybatis.spring.annotation.MapperScan;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.servlet.ServletComponentScan;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-@SpringBootApplication
 @ServletComponentScan
 @MapperScan("com.tuling.dynamic.datasource.mapper")
+@SpringBootApplication
 public class DynamicDatasourceApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(DynamicDatasourceApplication.class, args);
     }
+
     @Bean
     public DynamicDataSourceProvider jdbcDynamicDataSourceProvider() {
-        return new AbstractJdbcDataSourceProvider("com.mysql.cj.jdbc.Driver", "jdbc:mysql://127.0.0.1:3306/datasource1?serverTimezone=UTC&useUnicode=true&characterEncoding=UTF8&useSSL=false", "root", "root") {
+        return new AbstractJdbcDataSourceProvider("com.mysql.cj.jdbc.Driver", "jdbc:mysql://8.142.7.222:3306/datasource1?serverTimezone=UTC&useUnicode=true&characterEncoding=UTF8&useSSL=false", "zhoudalu", "WuMingTech2021") {
             @Override
             protected Map<String, DataSourceProperty> executeStmt(Statement statement) throws SQLException {
                 ResultSet rs = statement.executeQuery("select * from data_source");

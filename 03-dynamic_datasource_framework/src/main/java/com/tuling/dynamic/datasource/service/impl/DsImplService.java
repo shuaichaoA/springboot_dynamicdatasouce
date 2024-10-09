@@ -7,9 +7,11 @@ import com.tuling.dynamic.datasource.entity.Fee;
 import com.tuling.dynamic.datasource.mapper.DsMapper;
 import com.tuling.dynamic.datasource.service.DsService;
 import com.tuling.dynamic.datasource.service.FeeService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /***
@@ -17,10 +19,10 @@ import java.util.List;
  * @Slogan 致敬大师，致敬未来的你
  */
 @Service
+@RequiredArgsConstructor
 public class DsImplService implements DsService {
 
-    @Autowired
-    DsMapper dsMapper;
+    private final DsMapper dsMapper;
 
 
     @Override

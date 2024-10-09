@@ -10,15 +10,15 @@ import java.util.List;
 /**
  * @Auther: wangyi
  * @Date: 2020/12/12 01:16
- * @Description: 
+ * @Description:
  */
 public interface FeeMapper   {
-    @Select("SELECT * FROM Fee")
+    @Select("SELECT * FROM fee")
     List<Fee> list();
 
-    @Insert("INSERT INTO  Fee(`name`,`fee`) VALUES (#{name},#{fee})")
+    @Insert("INSERT INTO  fee(`name`,`fee`) VALUES (#{name},#{fee})")
     void save(Fee Fee);
 
-    @Insert("DELETE FROM Fee WHERE id=#{id}")
+    @Insert("DELETE FROM fee WHERE id=#{id}")
     void delete(int id);
 }

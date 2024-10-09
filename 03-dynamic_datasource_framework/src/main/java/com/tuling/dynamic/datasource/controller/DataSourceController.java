@@ -26,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.util.List;
 import java.util.Set;
@@ -36,7 +37,7 @@ public class DataSourceController {
 
     private final DataSource dataSource;
     private final DefaultDataSourceCreator dataSourceCreator;
-    @Autowired
+    @Resource
     private DsService dsService;
 
     public DataSourceController(DataSource dataSource, DefaultDataSourceCreator dataSourceCreator) {
@@ -90,6 +91,8 @@ public class DataSourceController {
         DynamicRoutingDataSource ds = (DynamicRoutingDataSource) dataSource;
         ds.removeDataSource(dto.getPoolName());
         DataSourceProperty dataSourceProperty = new DataSourceProperty();
+        dataSourceProperty.getDruid().setBreakAfterAcquireFailure(true);
+        dataSourceProperty.getDruid().setConnectionErrorRetryAttempts(3);
         BeanUtils.copyProperties(dto, dataSourceProperty);
         DataSource dataSource = dataSourceCreator.createDataSource(dataSourceProperty);
         ds.addDataSource(dto.getPoolName(), dataSource);
